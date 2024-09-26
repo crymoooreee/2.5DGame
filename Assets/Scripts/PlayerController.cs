@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
         float v = Input.GetAxis("Vertical");
 
         Vector3 directionVector = new Vector3(-v, 0, h);
-        if(directionVector.magnitude > Mathf.Abs(0.05f))
+        if (directionVector.magnitude > Mathf.Abs(0.05f))
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(directionVector), Time.deltaTime * rotationSpeed);
 
         animator.SetFloat("Speed", Vector3.ClampMagnitude(directionVector, 1).magnitude);
@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour
 
     private void UnCrouch()
     {
-        animator.SetBool("isCrouching",false);
+        animator.SetBool("isCrouching", false);
         speed = 4.5f;
         _collider.height = 3.8f;
         _collider.center = new Vector3(_collider.center.x, 1.89661f, _collider.center.z);
@@ -107,8 +107,8 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
-        if(animator.GetBool("isCrouching")) return;
-        
+        if (animator.GetBool("isCrouching")) return;
+
         if (isGrounded)
         {
             animator.SetTrigger("Jump");
