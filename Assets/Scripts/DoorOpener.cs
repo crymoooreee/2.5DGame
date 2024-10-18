@@ -1,23 +1,14 @@
 using UnityEngine;
 using TMPro;
-using System.Collections; // Import the TextMeshPro namespace
+using System.Collections;
 
 public class ButtonDoorOpener : MonoBehaviour
 {
-    // The door game object that we want to open
     public GameObject door;
-
-    // The distance from the button that the player must be within to activate the door
-    public float activationDistance = 2.0f;
-
-    // Скорость открытия двери
-    public float doorOpenSpeed = 2.0f;
-
-    // The 3D TextMeshPro component to display the hint
-    public TextMeshPro hintText; // Use TextMeshPro for 3D text
-
-    // The AudioSource component to play the door opening sound
-    public AudioSource doorOpenSound; // Assign the door opening sound in the Inspector
+    public float activationDistance = 2.0f; //* Дистанция для активации рычага и подсказки
+    public float doorOpenSpeed = 2.0f; //* Скорость открывания двери
+    public TextMeshPro hintText;
+    public AudioSource doorOpenSound;
 
     private bool isPlayerNearButton = false;
     private bool isDoorOpen = false;
@@ -31,25 +22,30 @@ public class ButtonDoorOpener : MonoBehaviour
 
     void Update()
     {
-        // Check if the player is near the button
+        //* Проверка рядом ли игрок
         float distanceToPlayer = Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position);
         if (distanceToPlayer <= activationDistance)
         {
             isPlayerNearButton = true;
-            hintText.gameObject.SetActive(true); // Show hint
+            hintText.gameObject.SetActive(true); //* Показать подсказку
         }
         else
         {
             isPlayerNearButton = false;
-            hintText.gameObject.SetActive(false); // Hide hint
+            hintText.gameObject.SetActive(false); //* Скрыть подсказку
         }
 
-        // Check if the player presses the E key
-        if (Input.GetKeyDown(KeyCode.E) && isPlayerNearButton && !isDoorOpen && playerController.key == true)
+        if (Input.GetKeyDown(KeyCode.E) && isPlayerNearButton && !isDoorOpen && playerController.key == true )
         {
-            // Open the door
             OpenDoor();
-            playerController.key = false;
+            playerController.key = false; //* Обнулить состояние ключа
+            playerController.list = 0;    //* Обнулить количество листов
+        }
+        if (Input.GetKeyDown(KeyCode.E) && isPlayerNearButton && !isDoorOpen && playerController.list >= 3 )
+        {
+            OpenDoor();
+            playerController.key = false; //* Обнулить состояние ключа
+            playerController.list = 0;    //* Обнулить количество листов
         }
     }
 
@@ -57,7 +53,7 @@ public class ButtonDoorOpener : MonoBehaviour
     {
         isDoorOpen = true;
         StartCoroutine(AnimateDoorOpen());
-        doorOpenSound.Play(); // Play the door opening sound
+        doorOpenSound.Play();
     }
 
     IEnumerator AnimateDoorOpen()

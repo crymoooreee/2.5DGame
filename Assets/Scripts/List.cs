@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 using TMPro;
-public class KeyScript : MonoBehaviour
+public class List : MonoBehaviour
 {
     //* Начать вызывать после обновления первого кадра
     public TextMeshPro hintText;
     public float activationDistance = 3.0f;
-    private bool isPlayerNearKey = false;
+    private bool isPlayerNearList = false;
     private PlayerController playerController;
 
     void Start()
@@ -21,20 +21,21 @@ public class KeyScript : MonoBehaviour
         float distanceToPlayer = Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position);
         if (distanceToPlayer <= activationDistance)
         {
-            isPlayerNearKey = true;
+            isPlayerNearList = true;
             hintText.gameObject.SetActive(true); //* Показать подсказку 
+            hintText.text = "F";
         }
         else
         {
-            isPlayerNearKey = false;
+            isPlayerNearList = false;
             hintText.gameObject.SetActive(false); //* Скрыть подсказку
         }
 
         //* Проверка рядом ли ключ и если да то проигрывать анимацию поднятия и удалять ключ
-        if (Input.GetKeyDown(KeyCode.F) && playerController.isGrounded == true && isPlayerNearKey)
+        if (Input.GetKeyDown(KeyCode.F) && playerController.isGrounded == true && isPlayerNearList)
         {
             playerController.Gather();
-            playerController.key = true;
+            playerController.list = playerController.list + 1;
             gameObject.SetActive(false);
         }
         else if (Input.GetKeyUp(KeyCode.F) && playerController.isGrounded == true)

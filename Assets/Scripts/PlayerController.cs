@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
@@ -14,22 +13,17 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 2f;
     public bool isGrounded;
     public bool key = false;
-    private float footstepCooldown = 0.5f; // adjust this value to your liking
+    public int list = 0;
+    private float footstepCooldown = 0.5f;
     private float nextFootstepTime = 0f;
     private CapsuleCollider _collider;
-
-    // Add a boolean to track if the player is attacking
     private bool isAttacking = false;
-
-    // Start is called before the first frame update
     void Start()
     {
         _collider = GetComponent<CapsuleCollider>();
         animator = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody>();
     }
-
-    // Update is called once per frame
     void Update()
     {
         float h = Input.GetAxis("Horizontal");
@@ -52,7 +46,7 @@ public class PlayerController : MonoBehaviour
                 nextFootstepTime = Time.time + footstepCooldown;
             }
         }
-
+        //* Проверки нажатия кнопок
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
@@ -95,6 +89,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    //* Функции действий
     private void UnCrouch()
     {
         animator.SetBool("isCrouching", false);
@@ -140,14 +135,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // Add attack method
+    //* Возможность атаковать
+    //! Временно убрана
     void AttackMeleOneHand()
     {
         isAttacking = true;
         animator.SetTrigger("InCombat");
         animator.SetTrigger("AttackMeleOneHand");
-        // Add any additional attack logic here, such as playing a sound effect or dealing damage to enemies
-        Invoke(nameof(ResetAttack), 0.5f); // Reset attack state after 0.5 seconds
+        Invoke(nameof(ResetAttack), 0.5f);
     }
     public void Gather()
     {
@@ -160,6 +155,7 @@ public class PlayerController : MonoBehaviour
     }
 }
 
+//! Не реализована
 internal class PlayerInventory
 {
 }
